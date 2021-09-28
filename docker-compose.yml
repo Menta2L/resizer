@@ -1,0 +1,21 @@
+version: '3'
+services:
+  varnish:
+    image: varnish
+    volumes:
+      - ./configs/default.vcl:/etc/varnish/default.vcl
+    ports:
+      - "8181:80"
+      - "6082:6082"
+    links:
+      - picfit
+  picfit:
+    build:
+      context: ./picfit/
+    container_name: picfit
+    volumes:
+      - ./configs/config.json:/config.json
+    ports:
+      - "3000"
+    environment:
+      - PICFIT_CONFIG_PATH=/config.json
