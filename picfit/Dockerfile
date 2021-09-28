@@ -3,8 +3,11 @@ LABEL stage=builder
 
 ENV REPO=thoas/picfit
 
-RUN GO111MODULE=off go get github.com/${REPO}
+ADD . /go/src/github.com/${REPO}
+
 WORKDIR /go/src/github.com/${REPO}
+RUN go get
+RUN go mod vendor
 RUN make docker-build-static && mv bin/picfit /picfit
 
 ###
